@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.affan.storyapp.api.ApiConfig
 import com.affan.storyapp.entity.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,13 +36,13 @@ class MainViewModel : ViewModel() {
     fun registerUser(name: String, email: String, password: String) {
         _loading.value = true
         val client = ApiConfig().getApiService().registerUser(name, email, password)
-        client.enqueue(object : Callback<RegisterResponse> {
+        client.enqueue(object : Callback<com.affan.storyapp.entity.DataResponse> {
             override fun onResponse(
-                call: Call<RegisterResponse>,
-                response: Response<RegisterResponse>
+                call: Call<com.affan.storyapp.entity.DataResponse>,
+                dataResponse: Response<com.affan.storyapp.entity.DataResponse>
             ) {
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
+                if (dataResponse.isSuccessful) {
+                    val responseBody = dataResponse.body()
                     if (responseBody != null) {
                         if (!responseBody.error) {
                             _loading.value = false
@@ -53,7 +55,7 @@ class MainViewModel : ViewModel() {
                         }
                     }
                 } else {
-                    val errorBody = response.errorBody()?.string()
+                    val errorBody = dataResponse.errorBody()?.string()
                     val errorMessage = JSONObject(errorBody).getString("message")
                     _loading.value = false
                     _message.value = errorMessage
@@ -62,7 +64,7 @@ class MainViewModel : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+            override fun onFailure(call: Call<com.affan.storyapp.entity.DataResponse>, t: Throwable) {
                 _loading.value = false
                 _error.value = true
                 _message.value = t.message
@@ -145,7 +147,7 @@ class MainViewModel : ViewModel() {
                     _error.value = false
                     val responseBody = response.body()
                     if (responseBody != null) {
-                        Log.d("etail", "etail:$responseBody ")
+
                         _story.value = responseBody.story
                     }
                 }
@@ -156,6 +158,34 @@ class MainViewModel : ViewModel() {
 
             }
         })
+    }
+    fun uploadStory(description:RequestBody,photo:MultipartBody.Part,header:String){
+    _loading.value = true
+        val client = ApiConfig().getApiService().uploadStory("Bearer $header",photo,description,null,null)
+        client.enqueue(object :Callback<DataResponse>{
+            override fun onResponse(call: Call<DataResponse>, response: Response<DataResponse>) {
+                if(response.isSuccessful){
+                    val responseBody = response.body()
+                    Log.d("etail", "etail:$responseBody ")
+                    if (responseBody!=null&&!responseBody.error){
+
+                        _message.value = responseBody.message
+                        _loading.value = false
+                        _error.value = false
+                    }
+                }else{
+                    _message.value = response.message()
+                }
+            }
+
+            override fun onFailure(call: Call<DataResponse>, t: Throwable) {
+                _loading.value = false
+                _message.value = t.message
+                _error.value = true
+            }
+
+        })
+
     }
 }
 

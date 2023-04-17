@@ -2,7 +2,7 @@ package com.affan.storyapp.entity
 
 import com.google.gson.annotations.SerializedName
 
-data class RegisterResponse(
+data class DataResponse(
 
 	@field:SerializedName("error")
 	val error: Boolean,
