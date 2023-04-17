@@ -1,0 +1,38 @@
+package com.affan.storyapp.api
+
+import com.affan.storyapp.entity.*
+import retrofit2.Call
+import retrofit2.http.*
+
+interface ApiService {
+    @FormUrlEncoded
+    @POST("/v1/register")
+    fun registerUser(
+        @Field("name") name: String,
+        @Field("email") email: String,
+        @Field("password") password: String,
+    ): Call<RegisterResponse>
+
+    @FormUrlEncoded
+    @POST("/v1/login")
+    fun loginUser(
+        @Field("email") email: String,
+        @Field("password") password: String,
+    ): Call<LoginResponse>
+
+    @GET("/v1/stories")
+    fun getAllStories(
+        @Query("page") page: Int?,
+        @Query("size") size: Int?,
+        @Query("location") location: Int = 0,
+        @Header("Authorization") token: String
+    ): Call<ListStoryResponse>
+
+
+    @GET("/v1/stories/{id}")
+    fun getDetailStory(
+        @Path("id") id: String,
+        @Header("Authorization") token: String
+    ): Call<StoryResponse>
+
+}
