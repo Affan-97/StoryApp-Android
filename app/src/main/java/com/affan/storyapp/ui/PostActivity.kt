@@ -8,19 +8,19 @@ import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.PackageManagerCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
-import com.affan.storyapp.R
 import com.affan.storyapp.databinding.ActivityPostBinding
 import com.affan.storyapp.helper.reduceFileImage
 import com.affan.storyapp.helper.rotateImage
@@ -34,7 +34,9 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
+
 class PostActivity : AppCompatActivity() {
     private var binding: ActivityPostBinding? = null
     private var getFile: File? = null
@@ -60,16 +62,27 @@ class PostActivity : AppCompatActivity() {
         binding?.apply {
             btnCamera.setOnClickListener { startCam() }
             btnGallery.setOnClickListener { startGallery() }
-            btnUpload.setOnClickListener { uploadImage() }
+            btnUpload.setOnClickListener { uploadImage()
+            }
         }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
     private fun uploadImage() {
-        Toast.makeText(this@PostActivity,"HI",Toast.LENGTH_SHORT).show()
+
         Log.d("getFile", getFile.toString())
         if (getFile != null) {
-            val file =reduceFileImage(getFile as File)
+            val file = reduceFileImage(getFile as File)
             val desc = binding?.edAddDescription?.text.toString().trim()
                 .toRequestBody("text/plain".toMediaType())
             val requestImageFile = file.asRequestBody("image/jpeg".toMediaType())
@@ -82,9 +95,20 @@ class PostActivity : AppCompatActivity() {
 
                 if (savedToken != null) {
                     mainViewModel.apply {
-                        uploadStory(desc,imageMultipart,savedToken)
+                        uploadStory(desc, imageMultipart, savedToken)
+                            error.observe(this@PostActivity){
+                                if (!it){
+                                    val intent = Intent(this@PostActivity, MainActivity::class.java)
+                                    intent.flags =
+                                        Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                    startActivity(intent)
+                                }
+                            }
+                        loading.observe(this@PostActivity){
+                            showLoading(it)
+                        }
                     }
-                }else{
+                } else {
 
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
@@ -162,7 +186,17 @@ class PostActivity : AppCompatActivity() {
             }
         }
     }
+    private fun showLoading(isLoading: Boolean) {
+        binding?.apply {
+            progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            dimmedBackground.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
     companion object {
         const val CAM_RESULT = 200
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)

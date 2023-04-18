@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -60,6 +61,9 @@ class MainActivity : AppCompatActivity() {
                 loginViewModel.saveSession(it)
             }
         }
+        mainViewModel.loading.observe(this){
+            showLoading(it)
+        }
         loginViewModel.getLoginSession().observe(this) { savedToken ->
 
             if (savedToken != null) {
@@ -80,6 +84,13 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+    private fun showLoading(isLoading: Boolean) {
+        binding?.apply {
+            progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            dimmedBackground.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.option_menu, menu)

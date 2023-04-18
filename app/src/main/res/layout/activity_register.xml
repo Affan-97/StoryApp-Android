@@ -7,80 +7,133 @@
         android:layout_height="match_parent"
         tools:context=".ui.RegisterActivity">
 
+    <TextView
+            android:text="@string/register"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            android:background="@drawable/view_bg"
+
+            />
+
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingVertical="32dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/view1"
+            app:layout_constraintBottom_toTopOf="@id/tv_have_account"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:orientation="vertical">
 
 
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
+                android:background="@drawable/edt_background"
+                android:id="@+id/ed_register_name"
+                android:drawableStart="@drawable/baseline_person_24"
+                android:drawablePadding="10dp"
+                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:gravity="start"
+                android:hint="@string/name_hint"
 
-            <EditText
-                    android:id="@+id/ed_register_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/name_hint"
-                    android:inputType="textCapSentences"
-                    android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:autofillHints="username" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
+                android:background="@drawable/edt_background"
+                android:id="@+id/ed_register_email"
+                android:drawableStart="@drawable/baseline_email_24"
+                android:drawablePadding="10dp"
+                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:gravity="start"
+                android:hint="@string/email_hint"
 
-            <EditText
-                    android:id="@+id/ed_register_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/email_hint"
-                    android:inputType="textCapSentences"
-                    android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:autofillHints="emailAddress" />
 
-        <com.google.android.material.textfield.TextInputLayout
+
+        <com.affan.storyapp.ui.MyEditText
+                android:background="@drawable/edt_background"
+                android:id="@+id/ed_register_password"
+                android:drawableStart="@drawable/baseline_lock_24"
+                android:drawablePadding="10dp"
+                android:padding="10dp"
+                android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:gravity="start"
+                android:hint="@string/pasword_hint"
 
-            <EditText
-                    android:id="@+id/ed_register_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/pasword_hint"
-                    android:inputType="textCapSentences"
-                    android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         <Button
                 android:id="@+id/btn_regis"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/register" />
 
-        <TextView
-            android:id="@+id/tv_have_account"
+                android:backgroundTint="@color/dodger_blue"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="Already Have ACcount?"/>
+                android:text="@string/login" />
 
 
     </LinearLayout>
 
+    <TextView
+            android:id="@+id/tv_have_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="@string/have_account"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    <View
+            android:id="@+id/dimmedBackground"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#88000000"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     <ProgressBar
+            android:visibility="gone"
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

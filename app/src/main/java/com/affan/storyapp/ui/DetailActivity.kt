@@ -3,6 +3,7 @@ package com.affan.storyapp.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.affan.storyapp.R
 import com.affan.storyapp.databinding.ActivityDetailBinding
 import com.affan.storyapp.databinding.ActivityMainBinding
+import com.affan.storyapp.helper.convertDate
 import com.affan.storyapp.preferences.LoginPreference
 import com.affan.storyapp.viewmodel.LoginFactory
 import com.affan.storyapp.viewmodel.LoginViewModel
@@ -53,22 +55,37 @@ class DetailActivity : AppCompatActivity() {
             }
 
         }
-        mainViewModel.story.observe(this){
-            binding?.apply {
-                tvDetailDescription.text= it.description
-                tvDetailName.text =  it.name
-                tvDetailDate.text = it.createdAt
-                ivDetailPhoto.let { imageView ->
-                    Glide.with(this@DetailActivity).load(it.photoUrl).into(
-                        imageView
-                    )
-            }
+        mainViewModel.apply {
+            story.observe(this@DetailActivity){
+                binding?.apply {
+                    tvDetailDescription.text= it.description
+                    tvDetailName.text =  it.name
+                    tvDetailDate.text = convertDate(it.createdAt)
+                    ivDetailPhoto.let { imageView ->
+                        Glide.with(this@DetailActivity).load(it.photoUrl).into(
+                            imageView
+                        )
+                    }
 
+                }
+            }
+            loading.observe(this@DetailActivity){
+                showLoading(it)
             }
         }
 
     }
+    private fun showLoading(isLoading: Boolean) {
+        binding?.apply {
+            progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            dimmedBackground.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
     companion object {
         const val ID_STORY ="id_story"
     }

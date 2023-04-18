@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">StoryApp</string>
-    <string name="pasword_hint">*******</string>
-    <string name="email_hint">user@example.com</string>
-    <string name="name_hint">ex. John Doe</string>
+    <string name="pasword_hint">Input Password</string>
+    <string name="email_hint">Fill Your Email</string>
+    <string name="name_hint">Input Your Name</string>
     <string name="register">Register</string>
     <string name="camera">Camera</string>
     <string name="upload">Unggah</string>
@@ -19,4 +19,9 @@
     <string name="Logout">Logout</string>
     <string name="btn_story">Write Your Story</string>
     <string name="camera_fail">Kamera Mengalami Kegagalan</string>
+    <string name="login">Login</string>
+    <string name="no_account">Don\'t Have Account?</string>
+    <string name="have_account">Already Have Account?</string>
+    <string name="placeholder">placeholder</string>
+    <string name="caption">Insert A Captiom</string>
 </resources>

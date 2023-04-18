@@ -17,7 +17,10 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[MainViewModel::class.java]
+        mainViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        )[MainViewModel::class.java]
 
         mainViewModel.loading.observe(this) {
             showLoading(it)
@@ -36,24 +39,28 @@ class RegisterActivity : AppCompatActivity() {
                     message.observe(this@RegisterActivity) {
                         Toast.makeText(this@RegisterActivity, it, Toast.LENGTH_SHORT).show()
                     }
-                error.observe(this@RegisterActivity){
-                    val  intent = Intent(this@RegisterActivity,LoginActivity::class.java)
-                    startActivity(intent)
-                }
+                    error.observe(this@RegisterActivity) {
+                        val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                        startActivity(intent)
+                    }
                 }
             }
             tvHaveAccount.setOnClickListener {
-                val  intent = Intent(this@RegisterActivity,LoginActivity::class.java)
+                val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                 startActivity(intent)
             }
         }
 
-
+        supportActionBar?.hide()
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding?.progressBar?.visibility = if (isLoading) View.VISIBLE else View.GONE
-         }
+        binding?.apply {
+            progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            dimmedBackground.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
