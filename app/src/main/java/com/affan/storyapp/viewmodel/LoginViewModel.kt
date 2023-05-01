@@ -17,6 +17,7 @@ class LoginViewModel(private val pref: LoginPreference) : ViewModel() {
             pref.saveSession(tokenKey)
         }
     }
+
     fun deleteSession() {
         viewModelScope.launch {
             pref.deleteSession()

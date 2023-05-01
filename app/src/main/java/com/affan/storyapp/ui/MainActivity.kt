@@ -2,19 +2,18 @@ package com.affan.storyapp.ui
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.affan.storyapp.R
 import com.affan.storyapp.adapter.RecyclerAdapter
 import com.affan.storyapp.databinding.ActivityMainBinding
@@ -30,6 +29,22 @@ class MainActivity : AppCompatActivity() {
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var mainViewModel: MainViewModel
     private var binding: ActivityMainBinding? = null
+    override fun onResume() {
+        super.onResume()
+
+        loginViewModel.getLoginSession().observe(this) { savedToken ->
+
+            if (savedToken != null) {
+
+                mainViewModel.getAllStories(savedToken)
+            } else {
+
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,14 +76,14 @@ class MainActivity : AppCompatActivity() {
                 loginViewModel.saveSession(it)
             }
         }
-        mainViewModel.loading.observe(this){
+        mainViewModel.loading.observe(this) {
             showLoading(it)
         }
         loginViewModel.getLoginSession().observe(this) { savedToken ->
 
             if (savedToken != null) {
                 mainViewModel.getAllStories(savedToken)
-            }else{
+            } else {
 
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
@@ -77,13 +92,14 @@ class MainActivity : AppCompatActivity() {
 
         }
         mainViewModel.listStory.observe(this) {
-            Log.d("savedToken", it?.toString() ?: "kodol")
+
             if (it != null) {
                 setData(it)
             }
         }
 
     }
+
     private fun showLoading(isLoading: Boolean) {
         binding?.apply {
             progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
@@ -103,21 +119,19 @@ class MainActivity : AppCompatActivity() {
                 loginViewModel.deleteSession()
                 true
             }
+            R.id.setting -> {
+                startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+                true
+            }
             else -> true
         }
     }
+
     private fun setData(userStories: List<ListStoryItem>) {
-        val adapter = RecyclerAdapter(userStories) {
-            showDetail(it)
-        }
+        val adapter = RecyclerAdapter(userStories)
         binding?.rvUser?.adapter = adapter
     }
-    private fun showDetail(story: ListStoryItem) {
-        val intent = Intent(this@MainActivity, DetailActivity::class.java)
 
-        intent.putExtra(DetailActivity.ID_STORY, story.id)
-        startActivity(intent)
-    }
     override fun onDestroy() {
         super.onDestroy()
         binding = null

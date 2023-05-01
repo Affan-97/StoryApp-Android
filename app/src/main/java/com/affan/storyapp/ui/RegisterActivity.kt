@@ -18,8 +18,7 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         mainViewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.NewInstanceFactory()
+            this, ViewModelProvider.NewInstanceFactory()
         )[MainViewModel::class.java]
 
         mainViewModel.loading.observe(this) {

@@ -5,10 +5,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.CameraActivity">
-<androidx.camera.view.PreviewView
-        android:id="@+id/viewFinder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+
+    <androidx.camera.view.PreviewView
+            android:id="@+id/viewFinder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     <ImageView
             android:id="@+id/captureImage"
             android:layout_width="60dp"
@@ -17,7 +19,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/baseline_camera_alt_24" />
+            app:srcCompat="@drawable/baseline_camera_alt_24"
+            android:contentDescription="@string/capture_button"/>
 
     <ImageView
             android:id="@+id/switchCamera"
@@ -27,5 +30,6 @@
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="@+id/viewFinder"
             app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/switch_btn"
             app:srcCompat="@drawable/baseline_flip_camera_android_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,7 +32,6 @@ class MainViewModel : ViewModel() {
     val story: LiveData<Story> = _story
 
 
-
     fun registerUser(name: String, email: String, password: String) {
         _loading.value = true
         val client = ApiConfig().getApiService().registerUser(name, email, password)
@@ -64,7 +63,10 @@ class MainViewModel : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<com.affan.storyapp.entity.DataResponse>, t: Throwable) {
+            override fun onFailure(
+                call: Call<com.affan.storyapp.entity.DataResponse>,
+                t: Throwable
+            ) {
                 _loading.value = false
                 _error.value = true
                 _message.value = t.message
@@ -111,9 +113,10 @@ class MainViewModel : ViewModel() {
 
         })
     }
-    fun getAllStories(header:String){
+
+    fun getAllStories(header: String) {
         _loading.value = true
-        val client = ApiConfig().getApiService().getAllStories(null,null,0, "Bearer $header")
+        val client = ApiConfig().getApiService().getAllStories(null, null, 0, "Bearer $header")
         client.enqueue(object : Callback<ListStoryResponse> {
             override fun onResponse(
                 call: Call<ListStoryResponse>, response: Response<ListStoryResponse>
@@ -128,6 +131,7 @@ class MainViewModel : ViewModel() {
                     }
                 }
             }
+
             override fun onFailure(call: Call<ListStoryResponse>, t: Throwable) {
                 _loading.value = false
                 _error.value = true
@@ -135,10 +139,11 @@ class MainViewModel : ViewModel() {
             }
         })
     }
-    fun getDetailStory(id:String,header:String){
+
+    fun getDetailStory(id: String, header: String) {
         _loading.value = true
         val client = ApiConfig().getApiService().getDetailStory(id, "Bearer $header")
-        client.enqueue(object : Callback<StoryResponse>{
+        client.enqueue(object : Callback<StoryResponse> {
             override fun onResponse(
                 call: Call<StoryResponse>, response: Response<StoryResponse>
             ) {
@@ -152,6 +157,7 @@ class MainViewModel : ViewModel() {
                     }
                 }
             }
+
             override fun onFailure(call: Call<StoryResponse>, t: Throwable) {
                 _loading.value = false
                 _error.value = true
@@ -159,21 +165,23 @@ class MainViewModel : ViewModel() {
             }
         })
     }
-    fun uploadStory(description:RequestBody,photo:MultipartBody.Part,header:String){
-    _loading.value = true
-        val client = ApiConfig().getApiService().uploadStory("Bearer $header",photo,description,null,null)
-        client.enqueue(object :Callback<DataResponse>{
+
+    fun uploadStory(description: RequestBody, photo: MultipartBody.Part, header: String) {
+        _loading.value = true
+        val client = ApiConfig().getApiService()
+            .uploadStory("Bearer $header", photo, description, null, null)
+        client.enqueue(object : Callback<DataResponse> {
             override fun onResponse(call: Call<DataResponse>, response: Response<DataResponse>) {
-                if(response.isSuccessful){
+                if (response.isSuccessful) {
                     val responseBody = response.body()
                     Log.d("etail", "etail:$responseBody ")
-                    if (responseBody!=null&&!responseBody.error){
+                    if (responseBody != null && !responseBody.error) {
 
                         _message.value = responseBody.message
                         _loading.value = false
                         _error.value = false
                     }
-                }else{
+                } else {
                     _message.value = response.message()
                 }
             }

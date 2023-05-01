@@ -9,10 +9,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.affan.storyapp.R
 import com.affan.storyapp.databinding.ActivityDetailBinding
-import com.affan.storyapp.databinding.ActivityMainBinding
 import com.affan.storyapp.helper.convertDate
 import com.affan.storyapp.preferences.LoginPreference
 import com.affan.storyapp.viewmodel.LoginFactory
@@ -21,6 +18,7 @@ import com.affan.storyapp.viewmodel.MainViewModel
 import com.bumptech.glide.Glide
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
+
 class DetailActivity : AppCompatActivity() {
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var mainViewModel: MainViewModel
@@ -39,15 +37,13 @@ class DetailActivity : AppCompatActivity() {
             ViewModelProvider.NewInstanceFactory()
         )[MainViewModel::class.java]
         val pref = LoginPreference.getInstance(dataStore)
-        loginViewModel = ViewModelProvider(this, LoginFactory(pref)).get(
-            LoginViewModel::class.java
-        )
+        loginViewModel = ViewModelProvider(this, LoginFactory(pref))[LoginViewModel::class.java]
 
         loginViewModel.getLoginSession().observe(this) { savedToken ->
 
             if (savedToken != null) {
-                mainViewModel.getDetailStory(id,savedToken)
-            }else{
+                mainViewModel.getDetailStory(id, savedToken)
+            } else {
 
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
@@ -56,10 +52,10 @@ class DetailActivity : AppCompatActivity() {
 
         }
         mainViewModel.apply {
-            story.observe(this@DetailActivity){
+            story.observe(this@DetailActivity) {
                 binding?.apply {
-                    tvDetailDescription.text= it.description
-                    tvDetailName.text =  it.name
+                    tvDetailDescription.text = it.description
+                    tvDetailName.text = it.name
                     tvDetailDate.text = convertDate(it.createdAt)
                     ivDetailPhoto.let { imageView ->
                         Glide.with(this@DetailActivity).load(it.photoUrl).into(
@@ -69,12 +65,13 @@ class DetailActivity : AppCompatActivity() {
 
                 }
             }
-            loading.observe(this@DetailActivity){
+            loading.observe(this@DetailActivity) {
                 showLoading(it)
             }
         }
 
     }
+
     private fun showLoading(isLoading: Boolean) {
         binding?.apply {
             progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
@@ -86,7 +83,8 @@ class DetailActivity : AppCompatActivity() {
         super.onDestroy()
         binding = null
     }
+
     companion object {
-        const val ID_STORY ="id_story"
+        const val ID_STORY = "id_story"
     }
 }

@@ -21,11 +21,13 @@ class LoginPreference private constructor(private val dataStore: DataStore<Prefe
             preferences[TOKEN] = tokenKey
         }
     }
+
     suspend fun deleteSession() {
         dataStore.edit { preferences ->
             preferences.remove(TOKEN)
         }
     }
+
     companion object {
         @Volatile
         private var INSTANCE: LoginPreference? = null

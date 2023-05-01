@@ -62,7 +62,8 @@ class PostActivity : AppCompatActivity() {
         binding?.apply {
             btnCamera.setOnClickListener { startCam() }
             btnGallery.setOnClickListener { startGallery() }
-            btnUpload.setOnClickListener { uploadImage()
+            btnUpload.setOnClickListener {
+                uploadImage()
             }
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -78,6 +79,7 @@ class PostActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
     private fun uploadImage() {
 
         Log.d("getFile", getFile.toString())
@@ -96,15 +98,15 @@ class PostActivity : AppCompatActivity() {
                 if (savedToken != null) {
                     mainViewModel.apply {
                         uploadStory(desc, imageMultipart, savedToken)
-                            error.observe(this@PostActivity){
-                                if (!it){
-                                    val intent = Intent(this@PostActivity, MainActivity::class.java)
-                                    intent.flags =
-                                        Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                                    startActivity(intent)
-                                }
+                        error.observe(this@PostActivity) {
+                            if (!it) {
+                                val intent = Intent(this@PostActivity, MainActivity::class.java)
+                                intent.flags =
+                                    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                startActivity(intent)
                             }
-                        loading.observe(this@PostActivity){
+                        }
+                        loading.observe(this@PostActivity) {
                             showLoading(it)
                         }
                     }
@@ -186,6 +188,7 @@ class PostActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun showLoading(isLoading: Boolean) {
         binding?.apply {
             progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
@@ -197,6 +200,7 @@ class PostActivity : AppCompatActivity() {
         super.onDestroy()
         binding = null
     }
+
     companion object {
         const val CAM_RESULT = 200
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)

@@ -4,9 +4,8 @@
     <string name="email_hint">Fill Your Email</string>
     <string name="name_hint">Input Your Name</string>
     <string name="register">Register</string>
-    <string name="camera">Camera</string>
-    <string name="upload">Unggah</string>
-    <string name="gallery">Gallery</string>
+    <string name="camera">Open Camera</string>
+    <string name="upload">Upload</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -14,14 +13,20 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_password">Password must be >8 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="Logout">Logout</string>
     <string name="btn_story">Write Your Story</string>
-    <string name="camera_fail">Kamera Mengalami Kegagalan</string>
     <string name="login">Login</string>
     <string name="no_account">Don\'t Have Account?</string>
     <string name="have_account">Already Have Account?</string>
     <string name="placeholder">placeholder</string>
-    <string name="caption">Insert A Captiom</string>
+    <string name="caption">Explain Your Story</string>
+    <string name="gallery">Open Gallery</string>
+
+    <string name="camera_fail">Camera Failing</string>
+    <string name="change_lang">Change Language</string>
+    <string name="switch_btn">Button to Flip Camera</string>
+    <string name="capture_fail">Fail To Take Picture</string>
+    <string name="capture_button">Button To Take Picture</string>
 </resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StoryApp</string>
+    <string name="pasword_hint">Masukkan Password</string>
+    <string name="email_hint">Masukkan Email</string>
+    <string name="name_hint">Tulis Nama Kamu</string>
+    <string name="register">Daftar</string>
+    <string name="camera">Buka Kamera</string>
+    <string name="upload">Unggah</string>
+    <string name="gallery">Buka Gallery</string>
+    <string name="title_activity_login">AktivitasLogin</string>
+
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Kata Sandi</string>
+
+    <string name="action_sign_in">Mendaftar</string>
+    <string name="action_sign_in_short">Daftar</string>
+    <string name="welcome">Selamat Datang!</string>
+    <string name="invalid_username">Username Tidak Valid</string>
+    <string name="invalid_password">Pasword tidak boleh kurang dari 8 karakter</string>
+
+    <string name="login_failed">Login Gagal</string>
+    <string name="Logout">Keluar</string>
+    <string name="btn_story">Tulis Ceritamu</string>
+    <string name="camera_fail">Kamera Mengalami Kegagalan</string>
+    <string name="login">Masuk</string>
+    <string name="no_account">Belum Punya akun?</string>
+    <string name="have_account">Sudah Punya Akun?</string>
+    <string name="placeholder">Sementara</string>
+    <string name="caption">Tulis Ceritamu</string>
+
+    <string name="change_lang">Ganti Bahasa</string>
+    <string name="capture_fail">Gagal mengambil gambar.</string>
+    <string name="capture_button">Tombol Untuk Mengambil Gambar</string>
+    <string name="switch_btn">Tombol Untuk Membalik Kamera</string>
+</resources>

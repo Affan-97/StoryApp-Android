@@ -3,6 +3,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:menuCategory="container">
 
+        <item android:id="@+id/setting"
+                android:title="@string/change_lang" />
         <item android:id="@+id/menu2"
                 android:title="@string/Logout" />
     </group>

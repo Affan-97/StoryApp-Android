@@ -1,20 +1,14 @@
 package com.affan.storyapp.ui
 
 import android.content.Context
-import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.Gravity
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.core.content.ContextCompat
 import com.affan.storyapp.R
 
 
@@ -46,7 +40,9 @@ class MyEditText : AppCompatEditText {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val errorMessage =
-                    if ((s?.length ?: 0) < 8) "Text must be at least 8 characters long" else null
+                    if ((s?.length
+                            ?: 0) < 8
+                    ) resources.getString(R.string.invalid_password) else null
                 setError(errorMessage)
             }
 

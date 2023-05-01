@@ -15,7 +15,6 @@ import com.affan.storyapp.preferences.LoginPreference
 import com.affan.storyapp.viewmodel.LoginFactory
 import com.affan.storyapp.viewmodel.LoginViewModel
 import com.affan.storyapp.viewmodel.MainViewModel
-import com.google.android.material.snackbar.Snackbar
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
 
@@ -61,11 +60,11 @@ class LoginActivity : AppCompatActivity() {
                             token.observe(this@LoginActivity) { token ->
 
                                 loginViewModel.saveSession(token)
+                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                intent.flags =
+                                    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                startActivity(intent)
                             }
-                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            intent.flags =
-                                Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                            startActivity(intent)
                         }
                     }
 
