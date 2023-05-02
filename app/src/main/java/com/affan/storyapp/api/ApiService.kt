@@ -23,12 +23,12 @@ interface ApiService {
     ): Call<LoginResponse>
 
     @GET("/v1/stories")
-    fun getAllStories(
+    suspend fun getAllStories(
         @Query("page") page: Int?,
         @Query("size") size: Int?,
         @Query("location") location: Int = 0,
         @Header("Authorization") token: String
-    ): Call<ListStoryResponse>
+    ): ListStoryResponse
 
 
     @GET("/v1/stories/{id}")

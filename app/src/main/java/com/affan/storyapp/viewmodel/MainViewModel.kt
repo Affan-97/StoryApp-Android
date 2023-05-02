@@ -34,7 +34,7 @@ class MainViewModel : ViewModel() {
 
     fun registerUser(name: String, email: String, password: String) {
         _loading.value = true
-        val client = ApiConfig().getApiService().registerUser(name, email, password)
+        val client = ApiConfig.getApiService().registerUser(name, email, password)
         client.enqueue(object : Callback<com.affan.storyapp.entity.DataResponse> {
             override fun onResponse(
                 call: Call<com.affan.storyapp.entity.DataResponse>,
@@ -78,7 +78,7 @@ class MainViewModel : ViewModel() {
 
     fun loginUser(email: String, password: String) {
         _loading.value = true
-        val client = ApiConfig().getApiService().loginUser(email, password)
+        val client = ApiConfig.getApiService().loginUser(email, password)
         client.enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful) {
@@ -114,7 +114,7 @@ class MainViewModel : ViewModel() {
         })
     }
 
-    fun getAllStories(header: String) {
+   /* fun getAllStories(header: String) {
         _loading.value = true
         val client = ApiConfig().getApiService().getAllStories(null, null, 0, "Bearer $header")
         client.enqueue(object : Callback<ListStoryResponse> {
@@ -138,11 +138,11 @@ class MainViewModel : ViewModel() {
 
             }
         })
-    }
+    }*/
 
     fun getDetailStory(id: String, header: String) {
         _loading.value = true
-        val client = ApiConfig().getApiService().getDetailStory(id, "Bearer $header")
+        val client = ApiConfig.getApiService().getDetailStory(id, "Bearer $header")
         client.enqueue(object : Callback<StoryResponse> {
             override fun onResponse(
                 call: Call<StoryResponse>, response: Response<StoryResponse>
@@ -169,7 +169,7 @@ class MainViewModel : ViewModel() {
     fun uploadStory(description: RequestBody, photo: MultipartBody.Part, header: String) {
         Log.d("etail", "etail ")
         _loading.value = true
-        val client = ApiConfig().getApiService()
+        val client = ApiConfig.getApiService()
             .uploadStory("Bearer $header", photo, description, null, null)
         client.enqueue(object : Callback<DataResponse> {
             override fun onResponse(call: Call<DataResponse>, response: Response<DataResponse>) {

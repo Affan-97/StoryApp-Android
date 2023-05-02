@@ -1,6 +1,8 @@
 package com.affan.storyapp.entity
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class DataResponse(
 
@@ -47,6 +49,7 @@ data class ListStoryResponse(
     val message: String
 )
 
+@Parcelize
 data class ListStoryItem(
 
     @field:SerializedName("photoUrl")
@@ -62,14 +65,14 @@ data class ListStoryItem(
     val description: String,
 
     @field:SerializedName("lon")
-    val lon: Any,
+    val lon: Double,
 
     @field:SerializedName("id")
     val id: String,
 
     @field:SerializedName("lat")
-    val lat: Any
-)
+    val lat: Double
+):Parcelable
 
 data class StoryResponse(
 

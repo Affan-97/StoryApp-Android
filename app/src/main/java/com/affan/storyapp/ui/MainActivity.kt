@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
             if (savedToken != null) {
 
-                mainViewModel.getAllStories(savedToken)
+
             } else {
 
                 val intent = Intent(this, LoginActivity::class.java)
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         loginViewModel.getLoginSession().observe(this) { savedToken ->
 
             if (savedToken != null) {
-                mainViewModel.getAllStories(savedToken)
+
             } else {
 
                 val intent = Intent(this, LoginActivity::class.java)
