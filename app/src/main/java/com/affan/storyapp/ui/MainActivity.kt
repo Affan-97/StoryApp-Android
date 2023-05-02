@@ -7,21 +7,24 @@ import android.provider.Settings
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.affan.storyapp.R
-import com.affan.storyapp.adapter.RecyclerAdapter
 import com.affan.storyapp.databinding.ActivityMainBinding
 import com.affan.storyapp.entity.ListStoryItem
 import com.affan.storyapp.preferences.LoginPreference
+import com.affan.storyapp.ui.fragment.HomeFragment
 import com.affan.storyapp.viewmodel.LoginFactory
 import com.affan.storyapp.viewmodel.LoginViewModel
 import com.affan.storyapp.viewmodel.MainViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
 
@@ -51,19 +54,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        binding?.apply {
-            rvUser.apply {
-                layoutManager = LinearLayoutManager(this@MainActivity)
-                setHasFixedSize(true)
-
-            }
-            btnPost.setOnClickListener {
-                val intent = Intent(this@MainActivity, PostActivity::class.java)
-                startActivity(intent)
-            }
-        }
-
-
         mainViewModel = ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
@@ -76,9 +66,17 @@ class MainActivity : AppCompatActivity() {
                 loginViewModel.saveSession(it)
             }
         }
-        mainViewModel.loading.observe(this) {
-            showLoading(it)
+        mainViewModel.listStory.observe(this) { item ->
+            mainViewModel.loading.observe(this) {
+                if (item != null) {
+                    if (it != null) {
+                Log.d("Tokenb", "onViewCreated: $it $item")
+
+                    }
+                }
+            }
         }
+
         loginViewModel.getLoginSession().observe(this) { savedToken ->
 
             if (savedToken != null) {
@@ -91,21 +89,24 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-        mainViewModel.listStory.observe(this) {
 
-            if (it != null) {
-                setData(it)
-            }
-        }
+
+        val navView: BottomNavigationView? = binding?.navView
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_home,
+                R.id.navigation_maps,
+                R.id.navigation_profile
+            )
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView?.setupWithNavController(navController)
+
 
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        binding?.apply {
-            progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-            dimmedBackground.visibility = if (isLoading) View.VISIBLE else View.GONE
-        }
-    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
@@ -127,10 +128,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setData(userStories: List<ListStoryItem>) {
-        val adapter = RecyclerAdapter(userStories)
-        binding?.rvUser?.adapter = adapter
-    }
 
     override fun onDestroy() {
         super.onDestroy()

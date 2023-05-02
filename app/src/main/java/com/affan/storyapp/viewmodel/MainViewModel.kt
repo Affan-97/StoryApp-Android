@@ -22,7 +22,7 @@ class MainViewModel : ViewModel() {
     private val _token = MutableLiveData<String>()
     val token: LiveData<String> = _token
 
-    private val _loading = MutableLiveData<Boolean>()
+    private val _loading = MutableLiveData<Boolean>(false)
     val loading: LiveData<Boolean> = _loading
 
     private val _listStory = MutableLiveData<List<ListStoryItem>?>()
@@ -47,8 +47,7 @@ class MainViewModel : ViewModel() {
                             _loading.value = false
                             _message.value = responseBody.message
                             _error.value = false
-                            Log.d("ApiService", responseBody.message)
-                            Log.d("ApiService", responseBody.toString())
+
 
 
                         }
@@ -59,7 +58,7 @@ class MainViewModel : ViewModel() {
                     _loading.value = false
                     _message.value = errorMessage
                     _error.value = true
-                    Log.d("ApiService", errorMessage)
+
                 }
             }
 
@@ -75,6 +74,7 @@ class MainViewModel : ViewModel() {
 
         })
     }
+
 
     fun loginUser(email: String, password: String) {
         _loading.value = true
@@ -167,6 +167,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun uploadStory(description: RequestBody, photo: MultipartBody.Part, header: String) {
+        Log.d("etail", "etail ")
         _loading.value = true
         val client = ApiConfig().getApiService()
             .uploadStory("Bearer $header", photo, description, null, null)
