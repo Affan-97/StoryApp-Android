@@ -3,6 +3,7 @@ package com.affan.storyapp.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -57,9 +58,9 @@ class LoginActivity : AppCompatActivity() {
                     }
                     error.observe(this@LoginActivity) {
                         if (!it) {
-                            token.observe(this@LoginActivity) { token ->
-
-                                loginViewModel.saveSession(token)
+                            user.observe(this@LoginActivity) { user ->
+                                Log.d("TAG", "onCreate: $user")
+                                loginViewModel.saveSession(user)
                                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                                 intent.flags =
                                     Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -82,11 +83,14 @@ class LoginActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         loginViewModel.getLoginSession().observe(this){
-            if (it!=null){
-                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                intent.flags =
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
+
+           if (it != null) {
+                if (it.token!=null){
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    intent.flags =
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                }
             }
         }
     }

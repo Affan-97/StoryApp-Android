@@ -20,7 +20,7 @@ class StoryPagingSource(private val apiService: ApiService, private val pref: Lo
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ListStoryItem> {
         return try {
             val page = params.key ?: INITIAL_INDEX
-            val token = "Bearer ${pref.getLoginSession().first()}"
+            val token = "Bearer ${pref.getLoginSession().first()?.token}"
 
             val responseData = apiService.getAllStories(page, params.loadSize, 0, token)
 

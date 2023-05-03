@@ -16,7 +16,6 @@
     <string name="invalid_password">Password must be >8 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="Logout">Logout</string>
-    <string name="btn_story">Write Your Story</string>
     <string name="login">Login</string>
     <string name="no_account">Don\'t Have Account?</string>
     <string name="have_account">Already Have Account?</string>
@@ -29,7 +28,12 @@
     <string name="switch_btn">Button to Flip Camera</string>
     <string name="capture_fail">Fail To Take Picture</string>
     <string name="capture_button">Button To Take Picture</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_location">LocationActivity</string>
+    <string name="welcome_user">Welcome,</string>
+    <string name="btn_story">Post</string>
+    <string name="home">Home</string>
+    <string name="maps">Maps</string>
+    <string name="profile">Profile</string>
 </resources>

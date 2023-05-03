@@ -3,18 +3,23 @@ package com.affan.storyapp.ui
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.affan.storyapp.R
+import com.affan.storyapp.data.MarkerData
 import com.affan.storyapp.databinding.ActivityLocationBinding
+import com.affan.storyapp.ui.fragment.MapsFragment
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import java.io.IOException
@@ -67,7 +72,7 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback {
                     .position(pos)
                     .title("location")
                     .snippet(getAddressName(pos.latitude, pos.longitude))
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
             )
             poiMarker?.showInfoWindow()
             markerData = MarkerData(
@@ -76,7 +81,7 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback {
                 addressName = getAddressName(pos.latitude, pos.longitude)
             )
             if (markerData?.latitude != null && markerData?.longitude != null && markerData?.addressName != null) {
-                // Make the submit button visible
+
                 binding.btnSelect.visibility = View.VISIBLE
             } else {
                 binding.btnSelect.visibility = View.GONE
@@ -84,6 +89,19 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
         currentLoaction()
+        setMapStyle()
+    }
+
+    private fun setMapStyle() {
+        try {
+            val success =
+                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
+            if (!success) {
+                Log.e(MapsFragment.TAG, "Style parsing failed.")
+            }
+        } catch (exception: Resources.NotFoundException) {
+            Log.e(MapsFragment.TAG, "Can't find style. Error: ", exception)
+        }
     }
 
 
@@ -126,8 +144,3 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback {
 
 }
 
-data class MarkerData(
-    val latitude: Double?,
-    val longitude: Double?,
-    val addressName: String?
-)

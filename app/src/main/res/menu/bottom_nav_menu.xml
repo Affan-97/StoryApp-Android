@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
             android:id="@+id/navigation_home"
-
-            android:title="Home" />
+            android:icon="@drawable/baseline_home_24"
+            android:title="@string/home" />
 
     <item
             android:id="@+id/navigation_maps"
-
-            android:title="Maps" />
+            android:icon="@drawable/baseline_map_24"
+            android:title="@string/maps" />
 
 
     <item
             android:id="@+id/navigation_profile"
-
-            android:title="Profile"/>
+            android:icon="@drawable/baseline_person_24_nav"
+            android:title="@string/profile" />
 </menu>

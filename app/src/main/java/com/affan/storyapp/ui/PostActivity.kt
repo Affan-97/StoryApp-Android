@@ -111,9 +111,15 @@ class PostActivity : AppCompatActivity() {
                                 .toRequestBody("text/plain".toMediaType())
                             val lng = longitude.toString()
                                 .toRequestBody("text/plain".toMediaType())
-                        uploadStory(desc, imageMultipart, savedToken, lat, lng)
+                            savedToken.token?.let {
+                                uploadStory(desc, imageMultipart,
+                                    it, lat, lng)
+                            }
                         }else{
-                        uploadStory(desc, imageMultipart, savedToken, null, null)
+                            savedToken.token?.let {
+                                uploadStory(desc, imageMultipart,
+                                    it, null, null)
+                            }
 
                         }
                         error.observe(this@PostActivity) {

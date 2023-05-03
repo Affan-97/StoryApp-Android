@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.affan.storyapp.api.ApiConfig
+import com.affan.storyapp.data.UserModel
 import com.affan.storyapp.entity.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -19,8 +20,8 @@ class MainViewModel : ViewModel() {
     val error: LiveData<Boolean> = _error
     private val _message = MutableLiveData<String>()
     val message: LiveData<String> = _message
-    private val _token = MutableLiveData<String>()
-    val token: LiveData<String> = _token
+    private val _users = MutableLiveData<UserModel>()
+    val user: LiveData<UserModel> = _users
 
     private val _loading = MutableLiveData<Boolean>(false)
     val loading: LiveData<Boolean> = _loading
@@ -88,9 +89,14 @@ class MainViewModel : ViewModel() {
                             _loading.value = false
                             _message.value = responseBody.message
                             _error.value = false
-                            _token.value = responseBody.loginResult.token
+                            _users.value = UserModel(responseBody.loginResult.name,
+                                responseBody.loginResult.token,
+                                responseBody.loginResult.userId,
+                            )
+                            Log.d("TAG", "onResponse: $_users.value")
 
-                            Log.d("ApiService", responseBody.message)
+
+                            Log.d("asaddwadasda", responseBody.message)
 
                         }
                     }

@@ -34,28 +34,37 @@
             app:layout_constraintBottom_toTopOf="@+id/btn_loc"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/baseline_image_24" />
 
     <TextView
-        android:id="@+id/tv_address"
+            android:id="@+id/tv_address"
             android:layout_width="0dp"
+            android:textAlignment="textStart"
+
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_loc"
-    app:layout_constraintBottom_toBottomOf="@id/btn_loc"
-    app:layout_constraintTop_toTopOf="@id/btn_loc"
+            app:layout_constraintBottom_toBottomOf="@id/btn_loc"
+            app:layout_constraintTop_toTopOf="@id/btn_loc"
+            android:layout_marginStart="16dp"
+            tools:text="Placeholder"
+            app:drawableStartCompat="@drawable/baseline_location_on_24" />
 
-            tools:text="Placeholder"/>
-
-    <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+    <ImageButton
             android:id="@+id/btn_loc"
-            android:text="location"
+
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/baseline_add_location_alt_24"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/edt_background"
+
             app:layout_constraintStart_toEndOf="@id/tv_address"
             app:layout_constraintBottom_toTopOf="@id/btn_camera" />
+
 
     <Button
             android:id="@+id/btn_gallery"

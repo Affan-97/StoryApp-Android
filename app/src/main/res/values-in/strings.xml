@@ -21,8 +21,8 @@
 
     <string name="login_failed">Login Gagal</string>
     <string name="Logout">Keluar</string>
-    <string name="btn_story">Tulis Ceritamu</string>
     <string name="camera_fail">Kamera Mengalami Kegagalan</string>
+    <string name="btn_story">Unggah</string>
     <string name="login">Masuk</string>
     <string name="no_account">Belum Punya akun?</string>
     <string name="have_account">Sudah Punya Akun?</string>

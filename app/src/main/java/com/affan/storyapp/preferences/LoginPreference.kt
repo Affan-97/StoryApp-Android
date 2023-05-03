@@ -4,27 +4,39 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.affan.storyapp.data.UserModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class LoginPreference private constructor(private val dataStore: DataStore<Preferences>) {
     private val TOKEN = stringPreferencesKey("session_token")
+    private val NAME = stringPreferencesKey("session_name")
+    private val ID = stringPreferencesKey("session_id")
 
-    fun getLoginSession(): Flow<String?> {
+    fun getLoginSession(): Flow<UserModel?> {
         return dataStore.data.map { preferences ->
-            preferences[TOKEN]
+            UserModel(
+            preferences[NAME]?:null,
+            preferences[TOKEN]?:null,
+            preferences[ID]?:null,
+
+            )
         }
     }
 
-    suspend fun saveSession(tokenKey: String) {
+    suspend fun saveSession(userModel: UserModel) {
         dataStore.edit { preferences ->
-            preferences[TOKEN] = tokenKey
+            preferences[TOKEN] = userModel.token as String
+            preferences[NAME] = userModel.name as String
+            preferences[ID] = userModel.id as String
         }
     }
 
     suspend fun deleteSession() {
         dataStore.edit { preferences ->
             preferences.remove(TOKEN)
+            preferences.remove(NAME)
+            preferences.remove(ID)
         }
     }
 

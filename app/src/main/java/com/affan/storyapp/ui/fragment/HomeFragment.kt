@@ -3,7 +3,6 @@ package com.affan.storyapp.ui.fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.affan.storyapp.adapter.LoadingStateAdapter
 import com.affan.storyapp.adapter.RecyclerAdapter
-import com.affan.storyapp.api.ApiConfig
 import com.affan.storyapp.databinding.FragmentHomeBinding
 import com.affan.storyapp.preferences.LoginPreference
 import com.affan.storyapp.ui.PostActivity
@@ -49,7 +47,11 @@ class HomeFragment : Fragment() {
         factory = ViewModelFactory.getInstance(requireActivity().applicationContext)
         storyViewModel = ViewModelProvider(this, factory)[StoryViewModel::class.java]
         getData()
-
+        loginViewModel.getLoginSession().observe(viewLifecycleOwner) {
+            if (it != null) {
+        binding?.tvUsername?.text = it.name
+            }
+        }
         binding?.apply {
 
             rvUser.layoutManager = LinearLayoutManager(requireContext())
@@ -71,7 +73,7 @@ class HomeFragment : Fragment() {
             }
         )
         storyViewModel.getStory().observe(viewLifecycleOwner) {
-            Log.d("TAG", "getData: $it.")
+
             adapter.submitData(lifecycle, it)
         }
     }

@@ -3,10 +3,7 @@ package com.affan.storyapp.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -18,9 +15,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.affan.storyapp.R
 import com.affan.storyapp.databinding.ActivityMainBinding
-import com.affan.storyapp.entity.ListStoryItem
 import com.affan.storyapp.preferences.LoginPreference
-import com.affan.storyapp.ui.fragment.HomeFragment
 import com.affan.storyapp.viewmodel.LoginFactory
 import com.affan.storyapp.viewmodel.LoginViewModel
 import com.affan.storyapp.viewmodel.MainViewModel
@@ -35,16 +30,14 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        loginViewModel.getLoginSession().observe(this) { savedToken ->
+        loginViewModel.getLoginSession().observe(this) { session ->
 
-            if (savedToken != null) {
-
-
-            } else {
-
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
+            if (session != null) {
+                if (session.token == null) {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
             }
         }
     }
@@ -61,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         val pref = LoginPreference.getInstance(dataStore)
         loginViewModel = ViewModelProvider(this, LoginFactory(pref))[LoginViewModel::class.java]
 
-        mainViewModel.token.observe(this) {
+        mainViewModel.user.observe(this) {
             if (it != null) {
                 loginViewModel.saveSession(it)
             }
@@ -70,22 +63,22 @@ class MainActivity : AppCompatActivity() {
             mainViewModel.loading.observe(this) {
                 if (item != null) {
                     if (it != null) {
-                Log.d("Tokenb", "onViewCreated: $it $item")
+                        Log.d("Tokenb", "onViewCreated: $it $item")
 
                     }
                 }
             }
         }
 
-        loginViewModel.getLoginSession().observe(this) { savedToken ->
+        loginViewModel.getLoginSession().observe(this) { session ->
 
-            if (savedToken != null) {
+            if (session != null) {
 
-            } else {
-
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
+                if (session.token == null) {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
             }
 
         }
@@ -102,30 +95,8 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView?.setupWithNavController(navController)
+        supportActionBar?.hide()
 
-
-    }
-
-
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.option_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu2 -> {
-                loginViewModel.deleteSession()
-                true
-            }
-            R.id.setting -> {
-                startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
-                true
-            }
-            else -> true
-        }
     }
 
 

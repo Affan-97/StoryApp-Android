@@ -3,7 +3,9 @@ package com.affan.storyapp.ui.fragment
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,9 +28,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
 
@@ -44,7 +44,8 @@ class MapsFragment : Fragment() {
         val dicodingSpace = LatLng(-6.8957643, 107.6338462)
         mMap.addMarker(
             MarkerOptions().position(dicodingSpace).title("Dicoding Space")
-                .snippet("Batik Kumeli No.50")
+                .snippet("Batik Kumeli No.50").icon(
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
         )
 
         mMap.uiSettings.isZoomControlsEnabled = true
@@ -52,6 +53,19 @@ class MapsFragment : Fragment() {
         mMap.uiSettings.isCompassEnabled = true
         mMap.uiSettings.isMapToolbarEnabled = true
         getMyLocation()
+        setMapStyle()
+    }
+
+    private fun setMapStyle() {
+        try {
+            val success =
+                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireActivity().applicationContext, R.raw.map_style))
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.")
+            }
+        } catch (exception: Resources.NotFoundException) {
+            Log.e(TAG, "Can't find style. Error: ", exception)
+        }
     }
 
     override fun onCreateView(
@@ -90,7 +104,7 @@ class MapsFragment : Fragment() {
         storyViewModel = ViewModelProvider(this, factory)[StoryViewModel::class.java]
         loginViewModel.getLoginSession().observe(viewLifecycleOwner) {
             if (it != null) {
-                storyViewModel.getStoryLoc(it)
+                it.token?.let { it1 -> storyViewModel.getStoryLoc(it1) }
             }
             storyViewModel.listStory.observe(viewLifecycleOwner) { list ->
                 if (list != null) {
@@ -115,6 +129,9 @@ class MapsFragment : Fragment() {
                 300
             )
         )
+    }
+    companion object{
+        const val TAG ="MapsFragment"
     }
 
 }

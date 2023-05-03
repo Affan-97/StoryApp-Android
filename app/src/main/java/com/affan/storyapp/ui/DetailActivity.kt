@@ -42,7 +42,7 @@ class DetailActivity : AppCompatActivity() {
         loginViewModel.getLoginSession().observe(this) { savedToken ->
 
             if (savedToken != null) {
-                mainViewModel.getDetailStory(id, savedToken)
+                savedToken.token?.let { mainViewModel.getDetailStory(id, it) }
             } else {
 
                 val intent = Intent(this, LoginActivity::class.java)
