@@ -36,4 +36,6 @@
     <string name="home">Home</string>
     <string name="maps">Maps</string>
     <string name="profile">Profile</string>
+    <string name="image_hint">The Preview of Image</string>
+    <string name="location_hint">Button to select Location</string>
 </resources>

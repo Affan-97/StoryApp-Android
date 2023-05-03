@@ -23,7 +23,7 @@ class MainViewModel : ViewModel() {
     private val _users = MutableLiveData<UserModel>()
     val user: LiveData<UserModel> = _users
 
-    private val _loading = MutableLiveData<Boolean>(false)
+    private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
     private val _listStory = MutableLiveData<List<ListStoryItem>?>()
@@ -93,11 +93,6 @@ class MainViewModel : ViewModel() {
                                 responseBody.loginResult.token,
                                 responseBody.loginResult.userId,
                             )
-                            Log.d("TAG", "onResponse: $_users.value")
-
-
-                            Log.d("asaddwadasda", responseBody.message)
-
                         }
                     }
                 } else {
@@ -120,31 +115,7 @@ class MainViewModel : ViewModel() {
         })
     }
 
-   /* fun getAllStories(header: String) {
-        _loading.value = true
-        val client = ApiConfig().getApiService().getAllStories(null, null, 0, "Bearer $header")
-        client.enqueue(object : Callback<ListStoryResponse> {
-            override fun onResponse(
-                call: Call<ListStoryResponse>, response: Response<ListStoryResponse>
-            ) {
-                if (response.isSuccessful) {
-                    _loading.value = false
-                    _error.value = false
-                    val responseBody = response.body()
-                    if (responseBody != null) {
-                        Log.d("ListStori", "onResponse:$responseBody ")
-                        _listStory.value = responseBody.listStory
-                    }
-                }
-            }
 
-            override fun onFailure(call: Call<ListStoryResponse>, t: Throwable) {
-                _loading.value = false
-                _error.value = true
-
-            }
-        })
-    }*/
 
     fun getDetailStory(id: String, header: String) {
         _loading.value = true

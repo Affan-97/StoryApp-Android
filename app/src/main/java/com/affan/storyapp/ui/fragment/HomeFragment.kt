@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
         getData()
         loginViewModel.getLoginSession().observe(viewLifecycleOwner) {
             if (it != null) {
-        binding?.tvUsername?.text = it.name
+                binding?.tvUsername?.text = it.name
             }
         }
         binding?.apply {
@@ -75,6 +75,15 @@ class HomeFragment : Fragment() {
         storyViewModel.getStory().observe(viewLifecycleOwner) {
 
             adapter.submitData(lifecycle, it)
+        }
+        storyViewModel.loading.observe(viewLifecycleOwner){
+            showLoading(it)
+        }
+    }
+    private fun showLoading(isLoading: Boolean) {
+        binding?.apply {
+            progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            dimmedBackground.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
     }
 

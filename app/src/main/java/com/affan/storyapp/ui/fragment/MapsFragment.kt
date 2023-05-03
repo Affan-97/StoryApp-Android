@@ -45,7 +45,8 @@ class MapsFragment : Fragment() {
         mMap.addMarker(
             MarkerOptions().position(dicodingSpace).title("Dicoding Space")
                 .snippet("Batik Kumeli No.50").icon(
-                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
+                )
         )
 
         mMap.uiSettings.isZoomControlsEnabled = true
@@ -59,7 +60,12 @@ class MapsFragment : Fragment() {
     private fun setMapStyle() {
         try {
             val success =
-                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireActivity().applicationContext, R.raw.map_style))
+                mMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                        requireActivity().applicationContext,
+                        R.raw.map_style
+                    )
+                )
             if (!success) {
                 Log.e(TAG, "Style parsing failed.")
             }
@@ -130,8 +136,9 @@ class MapsFragment : Fragment() {
             )
         )
     }
-    companion object{
-        const val TAG ="MapsFragment"
+
+    companion object {
+        const val TAG = "MapsFragment"
     }
 
 }

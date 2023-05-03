@@ -14,28 +14,57 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:elevation="2dp"
+
             android:text="@string/camera"
             app:layout_constraintBottom_toBottomOf="@+id/btn_gallery"
             app:layout_constraintEnd_toStartOf="@+id/btn_gallery"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_item_photo"
 
             />
 
     <ImageView
             android:id="@+id/iv_item_photo"
-            android:layout_width="350dp"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@id/btn_upload"
-
+            android:contentDescription="@string/image_hint"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ed_add_description"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/baseline_image_24" />
+
+    <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="0dp"
+            android:textAlignment="textStart"
+
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/iv_item_photo"
+            app:layout_constraintEnd_toStartOf="@id/btn_loc"
+            app:layout_constraintBottom_toBottomOf="@id/btn_loc"
+            app:layout_constraintTop_toTopOf="@id/btn_loc"
+            android:layout_marginStart="16dp"
+            tools:text="Placeholder"
+            app:drawableStartCompat="@drawable/baseline_location_on_24" />
+
+    <ImageButton
+            android:id="@+id/btn_loc"
+            android:contentDescription="@string/location_hint"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/baseline_add_location_alt_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/edt_background"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_address"
+            app:layout_constraintBottom_toTopOf="@id/btn_camera" />
+
 
     <Button
             android:id="@+id/btn_gallery"
@@ -45,8 +74,8 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:text="@string/gallery"
-            app:layout_constraintBottom_toBottomOf="@id/btn_camera"
-            app:layout_constraintTop_toTopOf="@id/btn_camera"
+            app:layout_constraintBottom_toTopOf="@+id/ed_add_description"
+           app:layout_constraintTop_toBottomOf="@id/btn_loc"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btn_camera" />
@@ -54,7 +83,7 @@
     <EditText
             android:background="@drawable/input_desc_bg"
             android:id="@+id/ed_add_description"
-            android:layout_width="0dp"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:layout_marginStart="16dp"
@@ -63,7 +92,6 @@
             android:hint="@string/caption"
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_item_photo"
             app:layout_constraintTop_toBottomOf="@id/btn_gallery"
             app:layout_constraintBottom_toTopOf="@id/btn_upload"
             android:autofillHints="" />
@@ -76,7 +104,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:text="@string/upload"
-
+            app:layout_constraintTop_toBottomOf="@id/ed_add_description"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

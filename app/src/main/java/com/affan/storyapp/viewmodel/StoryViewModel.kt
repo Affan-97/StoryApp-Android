@@ -14,15 +14,20 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class StoryViewModel(private val storyRepository: StoryRepository):ViewModel() {
+class StoryViewModel(private val storyRepository: StoryRepository) : ViewModel() {
     private val _listStory = MutableLiveData<List<ListStoryItem>?>()
     val listStory: LiveData<List<ListStoryItem>?> = _listStory
+
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> = _loading
     fun getStory(): LiveData<PagingData<ListStoryItem>> {
 
         return storyRepository.getStory().cachedIn(viewModelScope)
     }
+
     fun getStoryLoc(token: String) {
-        val header ="Bearer $token"
+        _loading.value = true
+        val header = "Bearer $token"
         Log.d("etail", "$header ")
         val client = ApiConfig.getApiService()
             .getStoriesLocation(1, header)
@@ -35,22 +40,25 @@ class StoryViewModel(private val storyRepository: StoryRepository):ViewModel() {
                     val responseBody = response.body()
                     Log.d("etail", "etail:$responseBody ")
                     if (responseBody != null && !responseBody.error) {
-
+                        _loading.value = false
                         _listStory.value = responseBody.listStory
 
                     }
                 } else {
+                    _loading.value = false
                     Log.d("Error", "onFailure: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<ListStoryResponse>, t: Throwable) {
+                _loading.value = false
                 Log.d("Error", "onFailure: ${t.message}")
             }
 
         })
     }
 }
+
 class ViewModelFactory(private val repo: StoryRepository) : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {

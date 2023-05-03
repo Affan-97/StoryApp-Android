@@ -1,6 +1,5 @@
 package com.affan.storyapp.paging
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.affan.storyapp.api.ApiService

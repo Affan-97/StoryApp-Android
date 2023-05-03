@@ -21,6 +21,7 @@
                 android:layout_height="wrap_content">
 
             <TextView
+                    android:drawableStart="@drawable/baseline_person_24_nav"
                     android:id="@+id/tv_detail_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -55,7 +56,7 @@
                     android:layout_width="0dp"
                     android:layout_margin="16dp"
                     android:layout_height="1dp"
-                    android:background="@color/black"
+                    android:background="@color/dark"
                     app:layout_constraintTop_toBottomOf="@id/tv_detail_name"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -82,7 +83,7 @@
                     android:layout_width="0dp"
                     android:layout_margin="16dp"
                     android:layout_height="1dp"
-                    android:background="@color/black"
+                    android:background="@color/dark"
                     app:layout_constraintTop_toBottomOf="@id/iv_detail_photo"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -52,10 +52,10 @@ class RecyclerAdapter :
         val list = getItem(position)
 
         if (list != null) {
-        Log.d("TAG", "onBindViewHolder: $list")
+            Log.d("TAG", "onBindViewHolder: $list")
             holder.bind(list)
-        }else{
-        Log.d("TAG", "onBindViewHolder: NULL")
+        } else {
+            Log.d("TAG", "onBindViewHolder: NULL")
 
         }
     }
@@ -66,7 +66,10 @@ class RecyclerAdapter :
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
+            override fun areContentsTheSame(
+                oldItem: ListStoryItem,
+                newItem: ListStoryItem
+            ): Boolean {
                 return oldItem.id == newItem.id
             }
         }

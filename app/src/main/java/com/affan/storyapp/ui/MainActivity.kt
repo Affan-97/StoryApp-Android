@@ -3,7 +3,6 @@ package com.affan.storyapp.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -59,16 +58,7 @@ class MainActivity : AppCompatActivity() {
                 loginViewModel.saveSession(it)
             }
         }
-        mainViewModel.listStory.observe(this) { item ->
-            mainViewModel.loading.observe(this) {
-                if (item != null) {
-                    if (it != null) {
-                        Log.d("Tokenb", "onViewCreated: $it $item")
 
-                    }
-                }
-            }
-        }
 
         loginViewModel.getLoginSession().observe(this) { session ->
 
