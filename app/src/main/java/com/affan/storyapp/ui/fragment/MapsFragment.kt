@@ -1,60 +1,120 @@
 package com.affan.storyapp.ui.fragment
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.affan.storyapp.R
+import com.affan.storyapp.databinding.FragmentMapsBinding
+import com.affan.storyapp.entity.ListStoryItem
+import com.affan.storyapp.preferences.LoginPreference
+import com.affan.storyapp.viewmodel.LoginFactory
+import com.affan.storyapp.viewmodel.LoginViewModel
+import com.affan.storyapp.viewmodel.StoryViewModel
+import com.affan.storyapp.viewmodel.ViewModelFactory
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MarkerOptions
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MapsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MapsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var mMap: GoogleMap
+    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var factory: ViewModelFactory
+    private lateinit var binding: FragmentMapsBinding
+    private lateinit var storyViewModel: StoryViewModel
+    private val boundsBuilder = LatLngBounds.Builder()
+    private val callback = OnMapReadyCallback { googleMap ->
+        mMap = googleMap
+        val dicodingSpace = LatLng(-6.8957643, 107.6338462)
+        mMap.addMarker(
+            MarkerOptions().position(dicodingSpace).title("Dicoding Space")
+                .snippet("Batik Kumeli No.50")
+        )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        mMap.uiSettings.isZoomControlsEnabled = true
+        mMap.uiSettings.isIndoorLevelPickerEnabled = true
+        mMap.uiSettings.isCompassEnabled = true
+        mMap.uiSettings.isMapToolbarEnabled = true
+        getMyLocation()
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MapsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MapsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            getMyLocation()
+        }
+    }
+
+    private fun getMyLocation() {
+        if (ContextCompat.checkSelfPermission(
+                requireActivity().applicationContext, Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            mMap.isMyLocationEnabled = true
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(callback)
+        val dataStore = requireContext().applicationContext.dataStore
+        val pref = LoginPreference.getInstance(dataStore)
+        loginViewModel = ViewModelProvider(this, LoginFactory(pref))[LoginViewModel::class.java]
+        factory = ViewModelFactory.getInstance(requireActivity().applicationContext)
+        storyViewModel = ViewModelProvider(this, factory)[StoryViewModel::class.java]
+        loginViewModel.getLoginSession().observe(viewLifecycleOwner) {
+            if (it != null) {
+                storyViewModel.getStoryLoc(it)
+            }
+            storyViewModel.listStory.observe(viewLifecycleOwner) { list ->
+                if (list != null) {
+                    addMarkers(list)
                 }
             }
+        }
     }
+
+    fun addMarkers(list: List<ListStoryItem>) {
+        list.forEach {
+            val latLng = LatLng(it.lat, it.lon)
+            mMap.addMarker(MarkerOptions().position(latLng).title(it.name).snippet(it.description))
+            boundsBuilder.include(latLng)
+        }
+        val bounds: LatLngBounds = boundsBuilder.build()
+        mMap.animateCamera(
+            CameraUpdateFactory.newLatLngBounds(
+                bounds,
+                resources.displayMetrics.widthPixels,
+                resources.displayMetrics.heightPixels,
+                300
+            )
+        )
+    }
+
 }

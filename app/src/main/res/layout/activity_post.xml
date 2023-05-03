@@ -31,11 +31,31 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn_gallery"
+            app:layout_constraintBottom_toTopOf="@+id/btn_loc"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/baseline_image_24" />
+
+    <TextView
+        android:id="@+id/tv_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_loc"
+    app:layout_constraintBottom_toBottomOf="@id/btn_loc"
+    app:layout_constraintTop_toTopOf="@id/btn_loc"
+
+            tools:text="Placeholder"/>
+
+    <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_loc"
+            android:text="location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_address"
+            app:layout_constraintBottom_toTopOf="@id/btn_camera" />
 
     <Button
             android:id="@+id/btn_gallery"

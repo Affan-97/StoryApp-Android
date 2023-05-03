@@ -40,6 +40,8 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class PostActivity : AppCompatActivity() {
     private var binding: ActivityPostBinding? = null
     private var getFile: File? = null
+    private var latitude: Double? = null
+    private var longitude: Double? = null
     private lateinit var mainViewModel: MainViewModel
     private lateinit var loginViewModel: LoginViewModel
 
@@ -65,6 +67,12 @@ class PostActivity : AppCompatActivity() {
             btnUpload.setOnClickListener {
                 uploadImage()
             }
+            btnLoc?.setOnClickListener {
+                val intent = Intent(this@PostActivity, LocationActivity::class.java)
+              launchMaps.launch(intent)
+
+            }
+
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -97,7 +105,17 @@ class PostActivity : AppCompatActivity() {
 
                 if (savedToken != null) {
                     mainViewModel.apply {
-                        uploadStory(desc, imageMultipart, savedToken)
+
+                        if (latitude!=null && longitude!=null){
+                            val lat = latitude.toString()
+                                .toRequestBody("text/plain".toMediaType())
+                            val lng = longitude.toString()
+                                .toRequestBody("text/plain".toMediaType())
+                        uploadStory(desc, imageMultipart, savedToken, lat, lng)
+                        }else{
+                        uploadStory(desc, imageMultipart, savedToken, null, null)
+
+                        }
                         error.observe(this@PostActivity) {
                             if (!it) {
                                 val intent = Intent(this@PostActivity, MainActivity::class.java)
@@ -165,6 +183,18 @@ class PostActivity : AppCompatActivity() {
             }
         }
     }
+    private val launchMaps = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == LOCATION_ACTIVITY_REQUEST_CODE) {
+        val text =
+            it.data?.getSerializableExtra("ADDRESS")
+            binding?.tvAddress?.text = text.toString()
+            latitude = it.data?.getSerializableExtra("EXTRA_LAT") as Double?
+            longitude = it.data?.getSerializableExtra("EXTRA_LNG") as Double?
+
+        }
+    }
 
     private fun isGranted() = Companion.REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
@@ -205,5 +235,9 @@ class PostActivity : AppCompatActivity() {
         const val CAM_RESULT = 200
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         private const val REQ_CODE = 10
+
+
+        const val LOCATION_ACTIVITY_REQUEST_CODE = 1
+
     }
 }

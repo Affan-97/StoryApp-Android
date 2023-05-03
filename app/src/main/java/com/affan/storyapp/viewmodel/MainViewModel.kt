@@ -166,11 +166,11 @@ class MainViewModel : ViewModel() {
         })
     }
 
-    fun uploadStory(description: RequestBody, photo: MultipartBody.Part, header: String) {
+    fun uploadStory(description: RequestBody, photo: MultipartBody.Part, header: String,lat:RequestBody?,long: RequestBody?) {
         Log.d("etail", "etail ")
         _loading.value = true
         val client = ApiConfig.getApiService()
-            .uploadStory("Bearer $header", photo, description, null, null)
+            .uploadStory("Bearer $header", photo, description, lat, long)
         client.enqueue(object : Callback<DataResponse> {
             override fun onResponse(call: Call<DataResponse>, response: Response<DataResponse>) {
                 if (response.isSuccessful) {

@@ -79,6 +79,18 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        loginViewModel.getLoginSession().observe(this){
+            if (it!=null){
+                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                intent.flags =
+                    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+            }
+        }
+    }
+
     private fun showLoading(isLoading: Boolean) {
         binding?.apply {
             progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE

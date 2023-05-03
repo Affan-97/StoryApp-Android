@@ -30,7 +30,12 @@ interface ApiService {
         @Header("Authorization") token: String
     ): ListStoryResponse
 
+    @GET("/v1/stories")
+     fun getStoriesLocation(
 
+        @Query("location") location: Int = 1,
+        @Header("Authorization") token: String
+    ): Call<ListStoryResponse>
     @GET("/v1/stories/{id}")
     fun getDetailStory(
         @Path("id") id: String,
