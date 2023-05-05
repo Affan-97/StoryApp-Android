@@ -41,13 +41,7 @@ class MapsFragment : Fragment() {
     private val boundsBuilder = LatLngBounds.Builder()
     private val callback = OnMapReadyCallback { googleMap ->
         mMap = googleMap
-        val dicodingSpace = LatLng(-6.8957643, 107.6338462)
-        mMap.addMarker(
-            MarkerOptions().position(dicodingSpace).title("Dicoding Space")
-                .snippet("Batik Kumeli No.50").icon(
-                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
-                )
-        )
+
 
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.uiSettings.isIndoorLevelPickerEnabled = true
@@ -123,7 +117,11 @@ class MapsFragment : Fragment() {
     fun addMarkers(list: List<ListStoryItem>) {
         list.forEach {
             val latLng = LatLng(it.lat, it.lon)
-            mMap.addMarker(MarkerOptions().position(latLng).title(it.name).snippet(it.description))
+            mMap.addMarker(
+                MarkerOptions().position(latLng).title(it.name).snippet(it.description).icon(
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
+                )
+            )
             boundsBuilder.include(latLng)
         }
         val bounds: LatLngBounds = boundsBuilder.build()

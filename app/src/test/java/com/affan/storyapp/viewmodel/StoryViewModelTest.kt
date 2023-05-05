@@ -55,7 +55,7 @@ class StoryViewModelTest{
 
         Assert.assertNotNull(differ.snapshot())
         Assert.assertEquals(dummyData.size, differ.snapshot().size)
-        Assert.assertEquals(dummyData[0].description, differ.snapshot()[0]?.description)
+        Assert.assertEquals(dummyData[0], differ.snapshot()[0])
     }
     @Test
     fun `when Get Stories Empty Should Return No Data`() = runTest {

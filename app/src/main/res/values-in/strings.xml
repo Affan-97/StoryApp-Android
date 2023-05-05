@@ -22,6 +22,8 @@
     <string name="login_failed">Login Gagal</string>
     <string name="Logout">Keluar</string>
     <string name="camera_fail">Kamera Mengalami Kegagalan</string>
+    <string name="welcome_user">Selamat Datang,</string>
+
     <string name="btn_story">Unggah</string>
     <string name="login">Masuk</string>
     <string name="no_account">Belum Punya akun?</string>
@@ -33,4 +35,12 @@
     <string name="capture_fail">Gagal mengambil gambar.</string>
     <string name="capture_button">Tombol Untuk Mengambil Gambar</string>
     <string name="switch_btn">Tombol Untuk Membalik Kamera</string>
+    <string name="home">Beranda</string>
+    <string name="maps">Peta</string>
+    <string name="profile">Profil</string>
+
+    <string name="image_hint">"Preview Gambar "</string>
+
+    <string name="location_hint">Tombol untuk Memilih lokasi</string>
+
 </resources>
